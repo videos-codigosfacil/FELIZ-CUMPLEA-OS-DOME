@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday Dome</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    button#playBtn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      font-size: 16px;
+      padding: 10px 20px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    p {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: white;
+      font-family: sans-serif;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas principal -->
+  <canvas id="c"></canvas>
+
+  
+
+  <!-- Botón para reproducir música -->
+  <button id="playBtn" onclick="playMusic()">🎵 Reproducir música</button>
+
+  <!-- Audio de cumpleaños (solo uno, limpio) -->
+  <audio id="bgMusic" loop>
+    <source src="hbd1.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <!-- Tu animación JavaScript -->
+  <script src="script.js"></script>
+
+  <!-- Script para reproducir música -->
+  <script>
+    function playMusic() {
+      const music = document.getElementById('bgMusic');
+      music.play();
+      document.getElementById('playBtn').style.display = 'none';
+    }
+
+    // Intenta reproducir automáticamente al cargar (algunos navegadores bloquearán esto)
+    window.addEventListener('load', () => {
+      const music = document.getElementById('bgMusic');
+      const playBtn = document.getElementById('playBtn');
+      
+      const playPromise = music.play();
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          playBtn.style.display = 'none'; // Autoplay permitido
+        }).catch(_ => {
+          playBtn.style.display = 'block'; // Se necesita clic del usuario
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
