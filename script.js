@@ -12,7 +12,7 @@ var w = c.width = window.innerWidth,
 			strings: [
   'HAPPY',
   'BIRTHDAY!',
-  'KIM',
+  'DOME',
   'TE DESEO',
   'MUCHA FELICIDAD ',
   'Y ÉXITOS ',
@@ -499,3 +499,46 @@ window.addEventListener( 'resize', function(){
 	ctx.font = opts.charSize + 'px Verdana';
 })
 
+function anim(){
+	
+	window.requestAnimationFrame(anim);
+	
+	ctx.fillStyle = '#111';
+	ctx.fillRect(0, 0, w, h);
+	
+	// Dibujar fondo antes de cualquier transformación
+
+	// ⭐ Dibujar estrellas parpadeantes (en coordenadas normales)
+	for (var i = 0; i < stars.length; i++) {
+	  var star = stars[i];
+	  star.alpha += star.delta;
+	  if (star.alpha <= 0 || star.alpha >= 1) star.delta = -star.delta;
+
+	  let hue = (i * 10) % 360;
+	  ctx.beginPath();
+	  ctx.arc(star.x, star.y, star.r, 0, Tau);
+	  ctx.fillStyle = `hsla(${hue}, 100%, 80%, ${star.alpha})`;
+	  ctx.fill();
+	}
+
+	// 🎉 Dibujar confetti (también en coordenadas normales)
+	for (var i = 0; i < confettis.length; i++) {
+	  confettis[i].step();
+	}
+
+	// 🔄 Transformar solo para las letras y fuegos artificiales
+	ctx.save(); // 🔒 Guardar estado original
+	ctx.translate(hw, hh); // Mover origen al centro
+
+	var done = true;
+	for (var l = 0; l < letters.length; ++l) {
+		letters[l].step();
+		if (letters[l].phase !== 'done') done = false;
+	}
+
+	ctx.restore(); // 🔓 Volver al sistema de coordenadas original
+
+	if (done)
+		for (var l = 0; l < letters.length; ++l)
+			letters[l].reset();
+}
